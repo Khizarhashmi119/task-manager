@@ -1,11 +1,14 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import styled from "styled-components";
 
 import menu from "@/utils/menu";
 
 function Sidebar() {
+  const pathname = usePathname();
+
   return (
     <Container>
       <Profile>
@@ -23,7 +26,7 @@ function Sidebar() {
       <MenuItems>
         {menu.map(({ icon, id, link, title }) => (
           <MenuItem key={id}>
-            <MenuItemLink href={link}>
+            <MenuItemLink href={link} $active={pathname === link}>
               {icon} {title}
             </MenuItemLink>
           </MenuItem>
@@ -33,16 +36,18 @@ function Sidebar() {
   );
 }
 
-const Container = styled.nav`
-  background-color: ${(props) => props.theme.colorBg2};
-  border: 2px solid ${(props) => props.theme.borderColor2};
+const Container = styled.nav(
+  (props) => `
+  background-color: ${props.theme.colorBg2};
+  border: 2px solid ${props.theme.borderColor2};
   border-radius: 1rem;
-  color: ${(props) => props.theme.colorGrey3};
+  color: ${props.theme.colorGrey3};
   display: flex;
   flex-direction: column;
   position: relative;
-  width: ${(props) => props.theme.sidebarWidth};
-`;
+  width: ${props.theme.sidebarWidth};
+`
+);
 
 const ProfileOverlay = styled.div`
   backdrop-filter: blur(10px);
@@ -93,13 +98,18 @@ const MenuItems = styled.ul`
 
 const MenuItem = styled.li``;
 
-const MenuItemLink = styled(Link)`
+const MenuItemLink = styled(Link)<{ $active?: boolean }>`
   align-items: center;
+  color: ${(props) => (props.$active ? props.theme.colorIcons2 : null)};
   cursor: pointer;
   display: flex;
   gap: 1rem;
   padding: 0.6rem 1rem 0.6rem 2.1rem;
   position: relative;
+
+  i {
+    color: ${(props) => (props.$active ? props.theme.colorIcons2 : null)};
+  }
 
   &::before {
     background-color: ${(props) => props.theme.activeNavLinkHover};
@@ -109,7 +119,19 @@ const MenuItemLink = styled(Link)`
     position: absolute;
     top: 0;
     transition: all 0.3s ease-in-out;
-    width: 0;
+    width: ${(props) => (props.$active ? "100%" : "0")};
+  }
+
+  &::after {
+    background-color: ${(props) => props.theme.colorGreenDark};
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    content: "";
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: ${(props) => (props.$active ? "0.3rem" : "0")};
   }
 
   &:hover {

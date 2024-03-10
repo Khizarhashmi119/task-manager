@@ -1,5 +1,8 @@
+"use client";
+import Tasks from "@/components/Tasks";
+
 function Home() {
-  return <main>Hello from Next.JS 14</main>;
+  return <Tasks title="Tasks" tasks={[]} />;
 }
 
 export default Home;
