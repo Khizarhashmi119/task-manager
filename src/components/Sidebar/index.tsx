@@ -101,7 +101,6 @@ const MenuItem = styled.li``;
 const MenuItemLink = styled(Link)<{ $active?: boolean }>`
   align-items: center;
   color: ${(props) => (props.$active ? props.theme.colorIcons2 : null)};
-  cursor: pointer;
   display: flex;
   gap: 1rem;
   padding: 0.6rem 1rem 0.6rem 2.1rem;

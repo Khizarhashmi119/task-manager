@@ -6,7 +6,7 @@ import themes, { ThemeType } from "./themes";
 
 const ThemeContext = React.createContext<{
   selectedTheme: ThemeType;
-  setTheme: (theme: ThemeType) => void;
+  setTheme: React.Dispatch<React.SetStateAction<ThemeType>>;
 }>({
   selectedTheme: "dark",
   setTheme: () => {},
