@@ -1,4 +1,4 @@
-"use client";
+import { useAuth, UserButton, useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -8,6 +8,10 @@ import menu from "@/utils/menu";
 
 function Sidebar() {
   const pathname = usePathname();
+  const auth = useAuth();
+  const user = useUser();
+
+  console.log({ auth, user });
 
   return (
     <Container>
@@ -32,6 +36,9 @@ function Sidebar() {
           </MenuItem>
         ))}
       </MenuItems>
+      <UserButtonContainer>
+        <UserButton />
+      </UserButtonContainer>
     </Container>
   );
 }
@@ -138,6 +145,13 @@ const MenuItemLink = styled(Link)<{ $active?: boolean }>`
       width: 100%;
     }
   }
+`;
+
+const UserButtonContainer = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0;
 `;
 
 export default Sidebar;

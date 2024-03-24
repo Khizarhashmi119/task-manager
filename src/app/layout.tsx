@@ -1,8 +1,8 @@
+import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
 import GlobalProviders from "@/components/GlobalProviders";
-import Sidebar from "@/components/Sidebar";
 import StyledComponentsRegistry from "@/lib/registry";
 
 import "@/styles/globals.scss";
@@ -18,25 +18,24 @@ type Props = React.PropsWithChildren<{}>;
 
 function RootLayout({ children }: Props) {
   return (
-    <html lang="en">
-      <head>
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-          integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-          crossOrigin="anonymous"
-          referrerPolicy="no-referrer"
-        />
-      </head>
-      <body className={inter.className}>
-        <StyledComponentsRegistry>
-          <GlobalProviders>
-            <Sidebar />
-            {children}
-          </GlobalProviders>
-        </StyledComponentsRegistry>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <head>
+          <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+            integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+            crossOrigin="anonymous"
+            referrerPolicy="no-referrer"
+          />
+        </head>
+        <body className={inter.className}>
+          <StyledComponentsRegistry>
+            <GlobalProviders>{children}</GlobalProviders>
+          </StyledComponentsRegistry>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
 
