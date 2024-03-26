@@ -20,7 +20,7 @@ function Sidebar() {
         <ProfileOverlay />
         <ProfileImageContainer>
           <ProfileImage
-            src={user?.hasImage ? user.imageUrl : "/avatar.png"}
+            src={user?.hasImage ? user.imageUrl : ""}
             alt="profile-image"
             width={70}
             height={70}
