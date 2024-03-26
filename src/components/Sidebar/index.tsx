@@ -1,17 +1,18 @@
-import { useAuth, UserButton, useUser } from "@clerk/nextjs";
+import { useAuth, useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import styled from "styled-components";
 
+import { logout } from "@/utils/icons";
 import menu from "@/utils/menu";
 
 function Sidebar() {
   const pathname = usePathname();
-  const auth = useAuth();
-  const user = useUser();
+  const { signOut } = useAuth();
+  const { user } = useUser();
 
-  console.log({ auth, user });
+  const handleClickLogoutButton = () => signOut();
 
   return (
     <Container>
@@ -19,13 +20,13 @@ function Sidebar() {
         <ProfileOverlay />
         <ProfileImageContainer>
           <ProfileImage
-            src={"/avatar.png"}
+            src={user?.hasImage ? user.imageUrl : "/avatar.png"}
             alt="profile-image"
             width={70}
             height={70}
           />
         </ProfileImageContainer>
-        <Username>John Doe</Username>
+        <Username>{user?.fullName}</Username>
       </Profile>
       <MenuItems>
         {menu.map(({ icon, id, link, title }) => (
@@ -36,9 +37,9 @@ function Sidebar() {
           </MenuItem>
         ))}
       </MenuItems>
-      <UserButtonContainer>
-        <UserButton />
-      </UserButtonContainer>
+      <LogoutButton onClick={handleClickLogoutButton}>
+        {logout} Sign out
+      </LogoutButton>
     </Container>
   );
 }
@@ -59,7 +60,6 @@ const Container = styled.nav(
 const ProfileOverlay = styled.div`
   backdrop-filter: blur(10px);
   background-color: ${(props) => props.theme.colorBg3};
-  border-radius: 1rem;
   inset: 0;
   opacity: 0.2;
   position: absolute;
@@ -69,12 +69,15 @@ const ProfileOverlay = styled.div`
 
 const Profile = styled.div`
   align-items: center;
+  border: 2px solid ${(props) => props.theme.borderColor2};
+  border-radius: 1rem;
   color: ${(props) => props.theme.colorGrey0};
   cursor: pointer;
   display: flex;
   font-weight: 500;
   gap: 1rem;
   margin: 1.5rem 1.5rem 3rem 1.5rem;
+  overflow: hidden;
   padding: 1rem 0.8rem;
   position: relative;
 
@@ -100,6 +103,7 @@ const Username = styled.h1`
 `;
 
 const MenuItems = styled.ul`
+  flex: 1;
   list-style: none;
 `;
 
@@ -147,11 +151,16 @@ const MenuItemLink = styled(Link)<{ $active?: boolean }>`
   }
 `;
 
-const UserButtonContainer = styled.div`
+const LogoutButton = styled.button`
   align-items: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  gap: 1rem;
   display: flex;
   justify-content: center;
-  margin: 1.5rem 0;
+  margin: 1.5rem;
 `;
 
 export default Sidebar;
